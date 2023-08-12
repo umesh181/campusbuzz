@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:campusbuzz_mainui/catg_all.dart';
+import 'package:like_button/like_button.dart';
 
 // ignore: must_be_immutable
 class Homescreen extends StatefulWidget {
@@ -23,7 +25,7 @@ class _HomescreenState extends State<Homescreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF5F5F5),
+      backgroundColor: Color.fromARGB(255, 228, 228, 228),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -96,7 +98,14 @@ class _HomescreenState extends State<Homescreen> {
                       padding: const EdgeInsets.all(5),
                       child: GestureDetector(
                         //insted of inkwell using GestureDetector
-                        onTap: () {}, //for navigations or any other function
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const All()));
+
+                          print("all catg");
+                        }, //for navigations or any other function
                         child: Container(
                           width: 77,
                           decoration: BoxDecoration(
@@ -211,9 +220,8 @@ class _HomescreenState extends State<Homescreen> {
                 ),
               ),
 
-              const SizedBox(height:5),
+              const SizedBox(height: 5),
 
-              
               //running banner
 
               Stack(
@@ -313,6 +321,10 @@ class _HomescreenState extends State<Homescreen> {
                               //insted of inkwell using GestureDetector
                               onTap: () {
                                 print("event pressed");
+                                Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const All()));
                               }, //for navigations or any other function
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -325,11 +337,14 @@ class _HomescreenState extends State<Homescreen> {
                                         ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(15.0),
-                                          child: Image.asset(
-                                            'images/event.jpg',
-                                            width: 210,
-                                            height: 138,
-                                            fit: BoxFit.cover,
+                                          child: Hero(
+                                            tag: "hero1",
+                                            child: Image.asset(
+                                              'images/event.jpg',
+                                              width: 210,
+                                              height: 138,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                         Column(
@@ -340,24 +355,23 @@ class _HomescreenState extends State<Homescreen> {
                                                 padding: const EdgeInsets.only(
                                                     top: 10, right: 10),
                                                 child: Container(
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50)),
-                                                  child: InkWell(
+                                                  width: 35,
+                                                  height: 35,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Color.fromARGB( 255, 255, 255, 255),
+                                                  ),
+                                                  child: GestureDetector(
                                                     onTap: () {
-                                                      // Add your onPressed function here
-                                                      print('Icon pressed');
+                                                    
                                                     },
                                                     child: const Padding(
-                                                      padding:
-                                                          EdgeInsets.all(5.0),
-                                                      child: Icon(
-                                                          Icons.favorite,
-                                                          color:
-                                                              Color(0xffF81B1B),
-                                                          size: 22),
+                                                      padding: EdgeInsets.only(
+                                                          left: 3),
+                                                      child: LikeButton(
+                                                        size: 25,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -436,7 +450,6 @@ class _HomescreenState extends State<Homescreen> {
 
                     //2nd event
 
-
                     Padding(
                       padding: const EdgeInsets.only(left: 8),
                       child: Container(
@@ -449,6 +462,10 @@ class _HomescreenState extends State<Homescreen> {
                           child: GestureDetector(
                               //insted of inkwell using GestureDetector
                               onTap: () {
+                                Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Event2()));
                                 print("event pressed");
                               }, //for navigations or any other function
                               child: Column(
@@ -572,7 +589,6 @@ class _HomescreenState extends State<Homescreen> {
                     ),
 
                     //event 3
-
 
                     Padding(
                       padding: const EdgeInsets.only(left: 8),
@@ -708,8 +724,6 @@ class _HomescreenState extends State<Homescreen> {
                       ),
                     ),
 
-                    
-
                     //event 4
                   ],
                 ),
@@ -721,7 +735,9 @@ class _HomescreenState extends State<Homescreen> {
                 height: 25,
               ),
               const Padding(
-                padding: EdgeInsets.only(right: 200, ),
+                padding: EdgeInsets.only(
+                  right: 200,
+                ),
                 child: Text(
                   'Popular Events',
                   style: TextStyle(
@@ -734,7 +750,7 @@ class _HomescreenState extends State<Homescreen> {
                 height: 10,
               ),
 
-              //popluar events 
+              //popluar events
 
               SizedBox(
                 height: 200,
@@ -878,7 +894,6 @@ class _HomescreenState extends State<Homescreen> {
 
                     //2nd popular event
 
-
                     Padding(
                       padding: const EdgeInsets.only(left: 8),
                       child: Container(
@@ -1015,7 +1030,6 @@ class _HomescreenState extends State<Homescreen> {
 
                     //3rd popular event
 
-
                     Padding(
                       padding: const EdgeInsets.only(left: 8),
                       child: Container(
@@ -1063,8 +1077,6 @@ class _HomescreenState extends State<Homescreen> {
                                                               50)),
                                                   child: InkWell(
                                                     onTap: () {
-                                                      // Navigator.push(context,MaterialPageRoute(builder: (context) => ,))
-                                                      // Add your onPressed function here
                                                       print('Icon pressed');
                                                     },
                                                     child: const Padding(
@@ -1150,15 +1162,9 @@ class _HomescreenState extends State<Homescreen> {
                         ),
                       ),
                     ),
-
-                    
-
-                    
                   ],
                 ),
               ),
-
-
             ],
           ),
         ),
