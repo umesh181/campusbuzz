@@ -8,7 +8,7 @@ class All extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:const Text('Event Name',style: TextStyle(color: Colors.black),),backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        title:const Text('Event Name',style: TextStyle(color: Colors.black),),backgroundColor:const Color.fromARGB(255, 255, 255, 255),
       ),
       body: Hero(
         tag: "hero1",
@@ -25,6 +25,6 @@ class Event2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Image.asset('images/music.jpg'),
-    );;
+    );
   }
 }
