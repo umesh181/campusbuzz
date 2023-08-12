@@ -69,6 +69,11 @@ flutter:
     - images/event3.png
     - images/event4.jpg
     - images/event5.webp
+    - images/dance.jpg
+    - images/music.jpg
+    - images/event.jpg
+
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
