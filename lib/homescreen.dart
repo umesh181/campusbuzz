@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:campusbuzz_mainui/catg_all.dart';
-import 'package:like_button/like_button.dart';
+import 'package:campusbuzz_mainui/detail_page.dart';
+
+import 'all_category_items.dart';
 
 // ignore: must_be_immutable
 class Homescreen extends StatefulWidget {
@@ -10,6 +11,7 @@ class Homescreen extends StatefulWidget {
   @override
   State<Homescreen> createState() => _HomescreenState();
 }
+bool showAllItems = false;
 
 class _HomescreenState extends State<Homescreen> {
   List imageList = [
@@ -46,9 +48,14 @@ class _HomescreenState extends State<Homescreen> {
                     const Text('New bowenaplly',
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w400)),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 132),
-                      child: Image.asset('svg/bell_3.png', width: 25),
+                    GestureDetector(
+                      onTap: (){
+                        print("bell icon tapped");
+                      },
+                      child: const Padding(
+                        padding:EdgeInsets.only(left: 130),
+                        child: Icon(Icons.notifications_none,size:30,)//Image.asset('svg/bell_3.png', width: 25),
+                      ),
                     )
                   ],
                 ),
@@ -87,9 +94,10 @@ class _HomescreenState extends State<Homescreen> {
               ),
 
               //category
+              
 
               SizedBox(
-                height: 50,
+                height: 55,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
@@ -99,10 +107,7 @@ class _HomescreenState extends State<Homescreen> {
                       child: GestureDetector(
                         //insted of inkwell using GestureDetector
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const All()));
+                          
 
                           print("all catg");
                         }, //for navigations or any other function
@@ -222,6 +227,8 @@ class _HomescreenState extends State<Homescreen> {
 
               const SizedBox(height: 5),
 
+              const SizedBox(height: 5),
+
               //running banner
 
               Stack(
@@ -322,9 +329,9 @@ class _HomescreenState extends State<Homescreen> {
                               onTap: () {
                                 print("event pressed");
                                 Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const All()));
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Detail()));
                               }, //for navigations or any other function
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -355,23 +362,24 @@ class _HomescreenState extends State<Homescreen> {
                                                 padding: const EdgeInsets.only(
                                                     top: 10, right: 10),
                                                 child: Container(
-                                                  width: 35,
-                                                  height: 35,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: Color.fromARGB( 255, 255, 255, 255),
-                                                  ),
-                                                  child: GestureDetector(
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50)),
+                                                  child: InkWell(
                                                     onTap: () {
-                                                    
+                                                      // Add your onPressed function here
+                                                      print('Icon pressed');
                                                     },
                                                     child: const Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 3),
-                                                      child: LikeButton(
-                                                        size: 25,
-                                                      ),
+                                                      padding:
+                                                          EdgeInsets.all(5.0),
+                                                      child: Icon(
+                                                          Icons.favorite,
+                                                          color:
+                                                              Color(0xffF81B1B),
+                                                          size: 22),
                                                     ),
                                                   ),
                                                 ),
@@ -463,9 +471,9 @@ class _HomescreenState extends State<Homescreen> {
                               //insted of inkwell using GestureDetector
                               onTap: () {
                                 Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Event2()));
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const Event2()));
                                 print("event pressed");
                               }, //for navigations or any other function
                               child: Column(
@@ -1165,6 +1173,11 @@ class _HomescreenState extends State<Homescreen> {
                   ],
                 ),
               ),
+
+              ElevatedButton(onPressed:(){Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AllCategoryItems()));}, child: Text('Explore'))
             ],
           ),
         ),
@@ -1172,3 +1185,21 @@ class _HomescreenState extends State<Homescreen> {
     );
   }
 }
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * / */
