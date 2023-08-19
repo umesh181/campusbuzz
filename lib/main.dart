@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:campusbuzz_mainui/homescreen.dart';
-
+import 'package:campusbuzz_mainui/nav.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -14,8 +13,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Campusbuzz',
-
-      home: Homescreen(),
+      home: TabsScreen(),
 
     );
   }

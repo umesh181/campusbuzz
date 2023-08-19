@@ -33,6 +33,9 @@ dependencies:
   carousel_slider: ^4.2.1
   like_button: ^2.0.5
   readmore: ^2.2.0
+  provider: ^6.0.5
+  material_design_icons_flutter: ^7.0.7296
+  transparent_image: ^2.0.1
 
 
   # The following adds the Cupertino Icons font to your application.

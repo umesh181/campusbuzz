@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:campusbuzz_mainui/detail_page.dart';
 
-import 'all_category_items.dart';
+
 
 // ignore: must_be_immutable
 class Homescreen extends StatefulWidget {
@@ -1174,10 +1174,7 @@ class _HomescreenState extends State<Homescreen> {
                 ),
               ),
 
-              ElevatedButton(onPressed:(){Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const AllCategoryItems()));}, child: Text('Explore'))
+              
             ],
           ),
         ),

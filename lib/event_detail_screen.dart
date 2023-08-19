@@ -1,12 +1,15 @@
+import 'package:campusbuzz_mainui/model/event.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
+import 'package:like_button/like_button.dart';
 
-// ignore: must_be_immutable
-class Detail extends StatelessWidget {
-  Detail({super.key});
+class EventDetailScreen extends StatelessWidget {
+  const EventDetailScreen({super.key,required this.event,required this.onToggleFavorite,});
 
-  String content =
-      "here will be a brief description about the above event long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English.There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum.";
+  final Event event;
+
+  final void Function(Event event) onToggleFavorite;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +32,9 @@ class Detail extends StatelessWidget {
                         child: Hero(
                             tag: "hero1",
                             child: Image.asset(
-                              'images/event.jpg',
+                              event.imageUrl,
                               width: double.infinity,
+                              height: 240,
                               fit: BoxFit.cover,
                             ))),
                     Column(
@@ -55,8 +59,8 @@ class Detail extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(
+                         Padding(
+                          padding:const EdgeInsets.only(
                             top: 155,
                             right: 15,
                           ),
@@ -64,10 +68,11 @@ class Detail extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             child: CircleAvatar(
                               backgroundColor: Colors.white,
-                              child: Icon(
-                                Icons.favorite,
-                                color: Color(0xffF81B1B),
-                              ),
+                              child: IconButton(onPressed: (){
+                                onToggleFavorite(event);
+
+                              }, 
+                              icon: const Icon(Icons.favorite,color: Color.fromARGB(255, 236, 11, 11),),),
                             ),
                           ),
                         )
@@ -78,10 +83,10 @@ class Detail extends StatelessWidget {
               ),
 
               //title
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: Text(
-                  'Aquila Fest 2023',
+                  event.title,
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
                 ),
               ),
@@ -91,10 +96,10 @@ class Detail extends StatelessWidget {
                 height: 15,
               ),
 
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: Text(
-                  "About Event",
+                  event.about_event_title,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
                 ),
               ),
@@ -162,7 +167,7 @@ class Detail extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
                 child: ReadMoreText(
-                  content,
+                  event.about_event_content,
                   trimLines: 5,
                   textAlign: TextAlign.justify,
                   trimMode: TrimMode.Line,
@@ -210,7 +215,7 @@ class Detail extends StatelessWidget {
                             InkWell(
                               onTap: (){},
 
-                              child:const  Column(
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(
@@ -220,7 +225,7 @@ class Detail extends StatelessWidget {
                             
                                       children: [
                                         Text(
-                                          "Monday, Oct 19, 2023",
+                                          event.date,
                                           style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w500),
@@ -229,7 +234,7 @@ class Detail extends StatelessWidget {
                                           height: 1.5,
                                         ),
                                         Text(
-                                          "8:30 PM - 11:30 PM",
+                                          event.time,
                                           style: TextStyle(
                                               fontSize: 13,
                                               fontWeight: FontWeight.w500,
@@ -280,7 +285,7 @@ class Detail extends StatelessWidget {
 
                                     children: [
                                       Text(
-                                        "St.Peter’s College,",
+                                        event.college_name,
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w500),
@@ -289,7 +294,7 @@ class Detail extends StatelessWidget {
                                         height: 1.5,
                                       ),
                                       Text(
-                                        "maisammaguda",
+                                        event.college_name,
                                         style: TextStyle(
                                             fontSize: 13,
                                             fontWeight: FontWeight.w500,
@@ -356,15 +361,4 @@ class Detail extends StatelessWidget {
   }
 }
 
-class Event2 extends StatelessWidget {
-  const Event2({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Image.asset('images/music.jpg'),
-    );
-  }
-}
-
-     // Hero(tag: "hero1", child: Image.asset('images/event.jpg')),
