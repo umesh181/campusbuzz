@@ -3,6 +3,8 @@
 class Event {
   const Event({
     required this.id,
+    required this.type,
+    required this.categories,
     required this.date,
     required this.title,
     required this.imageUrl,
@@ -15,6 +17,8 @@ class Event {
   });
 
   final String id;
+  final List<String> type;
+  final String categories;
   final String date;
   final String title;
   final String imageUrl;

@@ -2,7 +2,6 @@ import 'package:campusbuzz_mainui/model/event.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 import 'package:like_button/like_button.dart';
-
 class EventDetailScreen extends StatelessWidget {
   const EventDetailScreen({super.key,required this.event,required this.onToggleFavorite,});
 

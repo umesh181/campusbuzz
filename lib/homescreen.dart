@@ -1,15 +1,53 @@
+import 'package:campusbuzz_mainui/categories.dart';
+import 'package:campusbuzz_mainui/data/event_list.dart';
+import 'package:campusbuzz_mainui/model/event.dart';
+import 'package:campusbuzz_mainui/screen/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:campusbuzz_mainui/detail_page.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'package:campusbuzz_mainui/data/category_list.dart';
+
+_launchURLBrowser() async {
+  var url = Uri.parse("https://www.geeksforgeeks.org/");
+  if (await canLaunchUrl(url)) {
+    await launchUrl(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
 
+void _selectCategory(BuildContext context ,Categori categori) {
+  final filteredEvents = Event_details
+        .where((evnt) => evnt.categories.contains(categori.id))
+        .toList();
+        
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => EventScreen(
+           Ctitle: categori.Ctitle,events: filteredEvents,
+        ),
+      ),
+    ); // Navigator.push(context, route)
+  }
 
 // ignore: must_be_immutable
 class Homescreen extends StatefulWidget {
-  const Homescreen({super.key});
+  const Homescreen({super.key,});
+  final String url = 'https://www.example.com'; // Replace with your URL
+
+  
+  
+
+  
+
 
   @override
-  State<Homescreen> createState() => _HomescreenState();
+  State<Homescreen> createState() {
+    return _HomescreenState();
+  }
 }
 bool showAllItems = false;
 
@@ -27,7 +65,7 @@ class _HomescreenState extends State<Homescreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 228, 228, 228),
+      backgroundColor: Color(0xfff5f5f5),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -61,14 +99,14 @@ class _HomescreenState extends State<Homescreen> {
                 ),
               ),
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               //search bar
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 255, 255, 255),
+                      color: Color.fromARGB(255, 255, 255, 255),
                       borderRadius: BorderRadius.circular(23.5)),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -101,126 +139,11 @@ class _HomescreenState extends State<Homescreen> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    //1st catg
-                    Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: GestureDetector(
-                        //insted of inkwell using GestureDetector
-                        onTap: () {
-                          
+                    for (final categori in AvailableCategories)
+                      Categ (categori:categori,onSelectCategory: () {
+                _selectCategory(context,categori);
+              }, )
 
-                          print("all catg");
-                        }, //for navigations or any other function
-                        child: Container(
-                          width: 77,
-                          decoration: BoxDecoration(
-                              color: const Color(0xffE93030),
-                              borderRadius: BorderRadius.circular(22)),
-                          child: const Center(
-                            child: Text(
-                              'All',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    //2nd catg
-                    Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: GestureDetector(
-                        //insted of inkwell using GestureDetector
-                        onTap: () {}, //for navigations or any other function
-                        child: Container(
-                          width: 77,
-                          decoration: BoxDecoration(
-                              color: const Color(0xffE93030),
-                              borderRadius: BorderRadius.circular(22)),
-                          child: const Center(
-                            child: Text(
-                              'Sports',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    //3rd catg
-                    Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: GestureDetector(
-                        //insted of inkwell using GestureDetector
-                        onTap: () {}, //for navigations or any other function
-                        child: Container(
-                          width: 77,
-                          decoration: BoxDecoration(
-                              color: const Color(0xffE93030),
-                              borderRadius: BorderRadius.circular(22)),
-                          child: const Center(
-                            child: Text(
-                              'Fest',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    //4th catg
-                    Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: GestureDetector(
-                        //insted of inkwell using GestureDetector
-                        onTap: () {}, //for navigations or any other function
-                        child: Container(
-                          width: 77,
-                          decoration: BoxDecoration(
-                              color: const Color(0xffE93030),
-                              borderRadius: BorderRadius.circular(22)),
-                          child: const Center(
-                            child: Text(
-                              'Music',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    //5th catg
-                    Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: GestureDetector(
-                        //insted of inkwell using GestureDetector
-                        onTap: () {}, //for navigations or any other function
-                        child: Container(
-                          width: 77,
-                          decoration: BoxDecoration(
-                              color: const Color(0xffE93030),
-                              borderRadius: BorderRadius.circular(22)),
-                          child: const Center(
-                            child: Text(
-                              'More',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -523,6 +446,7 @@ class _HomescreenState extends State<Homescreen> {
                                                     ),
                                                   ),
                                                 ),
+                                                
                                               ),
                                             )
                                           ],
@@ -1173,6 +1097,14 @@ class _HomescreenState extends State<Homescreen> {
                   ],
                 ),
               ),
+              InkWell(
+                onTap: _launchURLBrowser,
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  color: Colors.amber,
+                ),
+              )
 
               
             ],
