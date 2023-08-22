@@ -8,9 +8,9 @@ class Explore_list extends StatelessWidget {
   const Explore_list({super.key, required this.event,required this.onselectevent,required this.onToggleFavorite});
 
   final Event event;
-  final void Function(Event event) onToggleFavorite;
 
   final void Function( Event event) onselectevent;
+  final void Function(Event event) onToggleFavorite;
   
 
   @override
@@ -135,7 +135,7 @@ class Explore_list extends StatelessWidget {
                                           child: InkWell(
                                             onTap: () {
                                               // Add your onPressed function here
-                                              onToggleFavorite(event);;
+                                              onToggleFavorite(event);
                                             },
                                             child: const Padding(
                                               padding: EdgeInsets.all(5.0),

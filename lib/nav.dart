@@ -1,4 +1,5 @@
 import 'package:campusbuzz_mainui/data/event_list.dart';
+import 'package:campusbuzz_mainui/event_detail_screen.dart';
 
 import 'package:campusbuzz_mainui/homescreen.dart';
 import 'package:campusbuzz_mainui/model/event.dart';
@@ -31,6 +32,9 @@ class _TabsScreen extends State<TabsScreen> {
     );
   }
 
+  //defin 
+  List<Widget> activePage = [];
+
   void _toggleMealFavoriteStatus(Event event) {
     final isExisting = _favoriteEvent.contains(event);
 
@@ -52,88 +56,78 @@ class _TabsScreen extends State<TabsScreen> {
       _selectedPageIndex = index;
     });
   }
+    PageController pageController = PageController();
+    void _onItemTapped(int selectedIndex) {
+    pageController.jumpToPage(selectedIndex);
+  }
+
   int _selectedPageIndex = 0;
   @override
+
   Widget build(BuildContext context) {
-     Widget activePage = const Homescreen();
-
-     if (_selectedPageIndex == 1) {
-       activePage = Explore(
-        title: 'Explore',
-      event: Event_details,
-      onToggleFavorite: _toggleMealFavoriteStatus,
+     activePage = [
+       Homescreen(onToggleFavorite: _toggleMealFavoriteStatus,event: Event_details, onselectevent: (Event event) { 
+        Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EventDetailScreen(event: event, onToggleFavorite:_toggleMealFavoriteStatus,),
+        ),
       );
-     }
-
-    if (_selectedPageIndex == 2) {
-      activePage = Explore(
+        },),
+      Explore(
+        title: 'Explore',
+        event: Event_details,
+        onToggleFavorite: _toggleMealFavoriteStatus,
+      ),
+      Explore(
         event: _favoriteEvent,
         title: 'Favorites',
         onToggleFavorite: _toggleMealFavoriteStatus,
-      );
-    }
-    if (_selectedPageIndex == 3) {
-        activePage= Profile();
-      }
+      ),
+      Profile(),
+    ];
     return Scaffold(
-        body: activePage,
-        bottomNavigationBar: NavigationBarTheme(
-          data: const NavigationBarThemeData(
-              indicatorColor: Color.fromARGB(255, 238, 129, 129)),
-          child: NavigationBar(
-            backgroundColor: Color.fromARGB(255, 255, 255, 255),
-            height: 60,
-            selectedIndex: _selectedPageIndex,
-            onDestinationSelected: (selectedPageIndex) =>
-                setState(() => _selectedPageIndex = selectedPageIndex),
-            destinations: [
-               const Padding(
-                padding: EdgeInsets.only(top: 13),
-                child: NavigationDestination(
-                  icon: Icon(
-                    Icons.home_outlined,
-                    color: Color.fromARGB(255, 66, 66, 66),
-                    size: 35,
-                  ),
-                  label: '',
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 13),
-                child: NavigationDestination(
-                  icon: Icon(
-                    MdiIcons.compassOutline,
-                    color: Colors.grey.shade800,
-                    size: 35,
-                  ),
-                  label: '',
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 13),
-                child: NavigationDestination(
-                  icon: Icon(
-                    Icons.favorite_border_rounded,
-                    color: Color.fromARGB(255, 66, 66, 66),
-                    size: 35,
-                  ),
-                  label: '',
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 13),
-                child: NavigationDestination(
-                    icon: Icon(
-                      Icons.person_outline,
-                      color: Color.fromARGB(255, 66, 66, 66),
-                      size: 35,
-                    ),
-                    label: ''),
-              ),
-            ],
+        body: PageView(
+        controller: pageController,
+        onPageChanged: _selectPage,
+        children: activePage,
+      ),
+          bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedPageIndex,
+        selectedItemColor: Colors.red,
+        unselectedItemColor: Colors.black,
+        backgroundColor: Colors.black,
+        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        onTap: _onItemTapped,
+        items: [
+          const BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home_outlined,
+              size: 35,
+            ),
+            label: '',
           ),
-        ),
-      );
+          BottomNavigationBarItem(
+              icon: Icon(
+                MdiIcons.compassOutline,
+                size: 35,
+              ),
+              label: ''),
+          const BottomNavigationBarItem(
+              icon: Icon(
+                Icons.favorite_border_rounded,
+                size: 35,
+              ),
+              label: ''),
+          const BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person_outline,
+                size: 35,
+              ),
+              label: ''),
+        ],
+      ),
+    );
   }
 }
 

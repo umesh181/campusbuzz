@@ -1,11 +1,16 @@
+import 'package:campusbuzz_mainui/event_detail_screen.dart';
 import 'package:campusbuzz_mainui/model/event.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class EventItem extends StatelessWidget {
-  const EventItem({super.key, required this.event});
+  const EventItem({super.key, required this.event,required this.onSelectEvent,required this.onToggleFavorite});
 
   final Event event;
+   //final void Function(Event event) onToggleFavorite;
+   final void Function(Event event) onSelectEvent;
+   final void Function(Event event) onToggleFavorite;
+
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +23,7 @@ class EventItem extends StatelessWidget {
       elevation: 2,
       child: InkWell(
         onTap: () {
+           onSelectEvent(event);
           
         },
         child: Stack(
@@ -41,13 +47,22 @@ class EventItem extends StatelessWidget {
                           borderRadius: BorderRadius.circular(50)),
                       child: InkWell(
                         onTap: () {
+                          
+                          
+                        
                           // Add your onPressed function here
                           //onToggleFavorite(event);;
                         },
-                        child: const Padding(
+                        child:  Padding(
                           padding: EdgeInsets.all(5.0),
-                          child: Icon(Icons.favorite,
-                              color: Color(0xffF81B1B), size: 22),
+                          child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              child: IconButton(onPressed: (){
+                                onToggleFavorite(event);
+
+                              }, 
+                              icon: const Icon(Icons.favorite,color: Color.fromARGB(255, 236, 11, 11),),),
+                            ),
                         ),
                       ),
                     ),
@@ -67,12 +82,12 @@ class EventItem extends StatelessWidget {
                   children: [
                     Text(
                       event.title,
-                      maxLines: 2,
+                      maxLines: 1,
                       textAlign: TextAlign.center,
                       softWrap: true,
                       overflow: TextOverflow.ellipsis, // Very long text ...
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize:15,
                         fontWeight: FontWeight.w400,
                         color: Colors.white,
                       ),
