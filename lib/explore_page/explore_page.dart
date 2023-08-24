@@ -1,20 +1,27 @@
 import 'package:campusbuzz_mainui/data/event_list.dart';
+import 'package:campusbuzz_mainui/event_detail_screen.dart';
 import 'package:campusbuzz_mainui/model/event.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:like_button/like_button.dart';
 
 class Explore_list extends StatelessWidget {
-  const Explore_list({super.key, required this.event,required this.onselectevent,required this.onToggleFavorite});
+  const Explore_list(
+      {super.key,
+      required this.event,
+      required this.onselectevent,
+      required this.onToggleFavorite});
 
   final Event event;
 
-  final void Function( Event event) onselectevent;
+  final void Function(Event event) onselectevent;
   final void Function(Event event) onToggleFavorite;
-  
 
   @override
   Widget build(BuildContext context) {
+    final eventLikeNotifier = Provider.of<EventLikeNotifier>(context);
+    final isLiked = eventLikeNotifier.isLiked(event.id);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -127,21 +134,20 @@ class Explore_list extends StatelessWidget {
                                       child: Padding(
                                         padding: const EdgeInsets.only(
                                             top: 10, right: 10),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(50)),
-                                          child: InkWell(
-                                            onTap: () {
-                                              // Add your onPressed function here
-                                              onToggleFavorite(event);
-                                            },
-                                            child: const Padding(
-                                              padding: EdgeInsets.all(5.0),
-                                              child: Icon(Icons.favorite,
-                                                  color: Color(0xffF81B1B),
-                                                  size: 22),
+                                        child: CircleAvatar(
+                                  
+                                          backgroundColor: Colors.white,
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 2),
+                                            child: LikeButton(
+                                              isLiked: isLiked,
+                                              onTap: (liked) async {
+                                                onToggleFavorite(event);
+                                                eventLikeNotifier
+                                                    .toggleLike(event.id);
+                                                return !liked;
+                                              },
                                             ),
                                           ),
                                         ),

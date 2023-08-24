@@ -1,17 +1,26 @@
 import 'package:campusbuzz_mainui/model/event.dart';
+import 'package:campusbuzz_mainui/paymet.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:like_button/like_button.dart';
+
+
 class EventDetailScreen extends StatelessWidget {
-  const EventDetailScreen({super.key,required this.event,required this.onToggleFavorite,});
+  const EventDetailScreen({
+    super.key,
+    required this.event,
+    required this.onToggleFavorite,
+  });
 
   final Event event;
 
   final void Function(Event event) onToggleFavorite;
-  
 
   @override
   Widget build(BuildContext context) {
+    final eventLikeNotifier = Provider.of<EventLikeNotifier>(context);
+    final isLiked = eventLikeNotifier.isLiked(event.id);
     return Scaffold(
       backgroundColor: Color(0xffF5F5F5),
       body: SafeArea(
@@ -58,8 +67,8 @@ class EventDetailScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                         Padding(
-                          padding:const EdgeInsets.only(
+                        Padding(
+                          padding: const EdgeInsets.only(
                             top: 155,
                             right: 15,
                           ),
@@ -67,11 +76,17 @@ class EventDetailScreen extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             child: CircleAvatar(
                               backgroundColor: Colors.white,
-                              child: IconButton(onPressed: (){
-                                onToggleFavorite(event);
-
-                              }, 
-                              icon: const Icon(Icons.favorite,color: Color.fromARGB(255, 236, 11, 11),),),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left:2),
+                                child: LikeButton(
+                                  isLiked: isLiked,
+                                  onTap: (liked) async {
+                                    onToggleFavorite(event);
+                                    eventLikeNotifier.toggleLike(event.id);
+                                    return !liked;
+                                  },
+                                ),
+                              ),
                             ),
                           ),
                         )
@@ -103,63 +118,6 @@ class EventDetailScreen extends StatelessWidget {
                 ),
               ),
 
-              //date and time
-
-              // SizedBox(
-              //   height: 10,
-              // ),
-              // //date
-              // const SizedBox(
-              //   child: Padding(
-              //     padding: EdgeInsets.symmetric(horizontal: 15),
-              //     child: Column(
-              //       children: [
-              //         SizedBox(
-              //           child: Row(
-              //             children: [
-              //               Icon(
-              //                 Icons.calendar_today_outlined,
-              //                 size: 20,
-              //               ),
-              //               SizedBox(
-              //                 width: 6,
-              //               ),
-              //               Text(
-              //                 "Oct 18 2023",
-              //                 style: TextStyle(
-              //                     fontSize: 15, fontWeight: FontWeight.w300),
-              //               ),
-              //             ],
-              //           ),
-              //         ),
-              //         SizedBox(
-              //           height: 10,
-              //         ),
-
-              //         //time
-              //         SizedBox(
-              //           child: Row(
-              //             children: [
-              //               Icon(
-              //                 Icons.watch_later_outlined,
-              //                 size: 20,
-              //               ),
-              //               SizedBox(
-              //                 width: 6,
-              //               ),
-              //               Text(
-              //                 "08:30 PM",
-              //                 style: TextStyle(
-              //                     fontSize: 15, fontWeight: FontWeight.w300),
-              //               ),
-              //             ],
-              //           ),
-              //         )
-              //       ],
-              //     ),
-              //   ),
-              // ),
-
               //about section content
 
               Padding(
@@ -167,7 +125,7 @@ class EventDetailScreen extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
                 child: ReadMoreText(
                   event.about_event_content,
-                  trimLines: 5,
+                  trimLines: 10,
                   textAlign: TextAlign.justify,
                   trimMode: TrimMode.Line,
                   trimCollapsedText: "Show More",
@@ -196,9 +154,9 @@ class EventDetailScreen extends StatelessWidget {
 
               //date and time
 
-               Container(
+              Container(
                 child: Padding(
-                  padding:const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Column(
                     children: [
                       SizedBox(
@@ -212,16 +170,15 @@ class EventDetailScreen extends StatelessWidget {
                               width: 20,
                             ),
                             InkWell(
-                              onTap: (){},
-
+                              onTap: () {},
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(
                                     width: 235,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                            
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           event.date,
@@ -247,7 +204,9 @@ class EventDetailScreen extends StatelessWidget {
                             ),
                             const Padding(
                               padding: EdgeInsets.only(left: 0),
-                              child: Icon(Icons.arrow_forward_ios,),
+                              child: Icon(
+                                Icons.arrow_forward_ios,
+                              ),
                             ),
                           ],
                         ),
@@ -280,8 +239,8 @@ class EventDetailScreen extends StatelessWidget {
                                 SizedBox(
                                   width: 235,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         event.college_name,
@@ -305,7 +264,7 @@ class EventDetailScreen extends StatelessWidget {
                               ],
                             ),
                             InkWell(
-                              onTap: (){
+                              onTap: () {
                                 print("location tapped");
                               },
                               child: Padding(
@@ -331,7 +290,9 @@ class EventDetailScreen extends StatelessWidget {
                   color: Color(0xff112031),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder:(context) => const Upi(),));
+                  },
                   child: const Padding(
                     padding: EdgeInsets.all(13),
                     child: Row(
@@ -360,4 +321,21 @@ class EventDetailScreen extends StatelessWidget {
   }
 }
 
+//class for liked button color status
 
+class EventLikeNotifier extends ChangeNotifier {
+  final Set<String> _likedEventIds = {};
+
+  void toggleLike(String eventId) {
+    if (_likedEventIds.contains(eventId)) {
+      _likedEventIds.remove(eventId);
+    } else {
+      _likedEventIds.add(eventId);
+    }
+    notifyListeners();
+  }
+
+  bool isLiked(String eventId) {
+    return _likedEventIds.contains(eventId);
+  }
+}
