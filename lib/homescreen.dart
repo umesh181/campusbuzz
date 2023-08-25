@@ -59,9 +59,10 @@ bool showAllItems = false;
 
 class _HomescreenState extends State<Homescreen> {
   List imageList = [
-    {"id": 1, "image_path": 'images/event1.jpg'},
-    {"id": 2, "image_path": 'images/event3.png'},
-    {"id": 3, "image_path": 'images/event5.webp'}
+    {"id": 1, "image_path": 'images/hacktopia.png'},
+    {"id": 2, "image_path": 'images/b1.jpg'},
+    {"id": 3, "image_path": 'images/b2.jpg'},
+    {"id": 4, "image_path": 'images/b3.jpeg'}
   ];
   //category stuff
 
