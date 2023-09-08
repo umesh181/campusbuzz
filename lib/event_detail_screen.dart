@@ -4,8 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:like_button/like_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
+_launchurl() async {
+  var url = Uri.parse("https://www.google.com/maps/place/St.+Peter%E2%80%99s+Engineering+College/@17.5659436,78.4486349,17z/data=!3m1!4b1!4m6!3m5!1s0x3bcb8f0aa384c7bd:0x920ffa3cc552278a!8m2!3d17.5659436!4d78.4512098!16s%2Fm%2F0gx2lvy?entry=ttu");
+
+  if (await canLaunchUrl(url)) {
+    await launchUrl(url);
+  } else {
+    throw 'Cannot launch URL';
+  }
+}
 class EventDetailScreen extends StatelessWidget {
   const EventDetailScreen({
     super.key,
@@ -223,59 +233,62 @@ class EventDetailScreen extends StatelessWidget {
 
                       //location
 
-                      SizedBox(
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.location_on_outlined,
-                              size: 40,
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 235,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        event.college_name,
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      SizedBox(
-                                        height: 1.5,
-                                      ),
-                                      Text(
-                                        event.college_name,
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(0xff8D8D8D)),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                            InkWell(
-                              onTap: () {
-                                print("location tapped");
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 0),
-                                child: Icon(Icons.arrow_forward_ios),
+                  GestureDetector(
+                    onTap: () {
+                      _launchurl();
+                    },
+                    child: Container( child: SizedBox(
+                          child: Row(
+                            children: [
+                           const   Icon(
+                                Icons.location_on_outlined,
+                                size: 40,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
+                            const  SizedBox(
+                                width: 20,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 235,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          event.college_name,
+                                          style:const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                     const   SizedBox(
+                                          height: 1.5,
+                                        ),
+                                        Text(
+                                          event.college_name,
+                                          style:const TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(0xff8D8D8D)),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                              InkWell(
+                               
+                                child:const Padding(
+                                  padding: EdgeInsets.only(left: 0),
+                                  child: Icon(Icons.arrow_forward_ios),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),),
+                  ),
+                    const  SizedBox(
                         height: 30,
                       ),
                     ],
@@ -310,7 +323,7 @@ class EventDetailScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+           const   SizedBox(
                 height: 50,
               ),
             ],

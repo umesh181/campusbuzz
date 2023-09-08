@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1028038314715",
+    "project_id": "campusbuzz-132a9",
+    "storage_bucket": "campusbuzz-132a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028038314715:android:4571400fd84e51645a9afe",
+        "android_client_info": {
+          "package_name": "com.example.campusbuzz_mainui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1028038314715-rnougkai6d6fdftraqdt0ri0qh2okja0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7nF2VX44aGzXvUOBgW5qWZG7BOnSERnc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1028038314715-rnougkai6d6fdftraqdt0ri0qh2okja0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
