@@ -1,15 +1,14 @@
-import 'package:campusbuzz_mainui/event_detail_screen.dart';
 import 'package:campusbuzz_mainui/model/event.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class EventItem extends StatelessWidget {
-  const EventItem({super.key, required this.event,required this.onSelectEvent,required this.onToggleFavorite});
+  const EventItem({super.key, required this.event,required this.onSelectEvent,});
 
   final Event event;
    //final void Function(Event event) onToggleFavorite;
    final void Function(Event event) onSelectEvent;
-   final void Function(Event event) onToggleFavorite;
+  //  final void Function(Event event) onToggleFavorite;
 
 
   @override
@@ -58,7 +57,7 @@ class EventItem extends StatelessWidget {
                           child: CircleAvatar(
                               backgroundColor: Colors.white,
                               child: IconButton(onPressed: (){
-                                onToggleFavorite(event);
+                                // onToggleFavorite(event);
 
                               }, 
                               icon: const Icon(Icons.favorite,color: Color.fromARGB(255, 236, 11, 11),),),

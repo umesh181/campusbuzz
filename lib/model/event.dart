@@ -13,6 +13,7 @@ class Event {
     required this.about_event_title,
     required this.about_event_content,
     required this.price,
+    required this.location,
     
   });
 
@@ -27,6 +28,7 @@ class Event {
   final String about_event_title;
   final String about_event_content;
   final int price;
+  final String location;
   
 
   

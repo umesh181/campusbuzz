@@ -1,27 +1,29 @@
 import 'package:campusbuzz_mainui/data/event_list.dart';
 import 'package:campusbuzz_mainui/event_detail_screen.dart';
-
+import 'package:campusbuzz_mainui/event_explore_screen/explore_screen.dart';
 import 'package:campusbuzz_mainui/homescreen.dart';
 import 'package:campusbuzz_mainui/model/event.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:campusbuzz_mainui/provider/favprovider.dart';
 import 'package:flutter/material.dart';
-import 'package:campusbuzz_mainui/event_explore_screen/explore_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-class TabsScreen extends StatefulWidget {
+
+class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
 
   @override
-  State<TabsScreen> createState() {
+  ConsumerState<TabsScreen> createState() {
 
     return _TabsScreen();
   }
 }
 
-class _TabsScreen extends State<TabsScreen> {
+class _TabsScreen extends ConsumerState<TabsScreen> {
 
-  final List<Event> _favoriteEvent = [];
+  // final List<Event> _favoriteEvent = [];
 
   void _showInfoMessage(String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -35,21 +37,21 @@ class _TabsScreen extends State<TabsScreen> {
   //defin 
   List<Widget> activePage = [];
 
-  void _toggleMealFavoriteStatus(Event event) {
-    final isExisting = _favoriteEvent.contains(event);
+  // void _toggleMealFavoriteStatus(Event event) {
+  //   final isExisting = _favoriteEvent.contains(event);
 
-    if (isExisting) {
-      setState(() {
-        _favoriteEvent.remove(event);
-        _showInfoMessage('Removed from favorites');
-      });
-    } else { 
-      setState(() {
-        _favoriteEvent.add(event);
-        _showInfoMessage('Added to favorites');
-      });
-    }
-  }
+  //   if (isExisting) {
+  //     setState(() {
+  //       _favoriteEvent.remove(event);
+  //       _showInfoMessage('Removed from favorites');
+  //     });
+  //   } else { 
+  //     setState(() {
+  //       _favoriteEvent.add(event);
+  //       _showInfoMessage('Added to favorites');
+  //     });
+  //   }
+  // }
 
   void _selectPage(int index) {
     setState(() {
@@ -65,24 +67,25 @@ class _TabsScreen extends State<TabsScreen> {
   @override
 
   Widget build(BuildContext context) {
+    final favoriteEvent = ref.watch(favoriteEventsProvider);
      activePage = [
-       Homescreen(onToggleFavorite: _toggleMealFavoriteStatus,event: Event_details, onselectevent: (Event event) { 
+       Homescreen(event: Event_details, onselectevent: (Event event) {
         Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => EventDetailScreen(event: event, onToggleFavorite:_toggleMealFavoriteStatus,),
+          builder: (context) => EventDetailScreen(event: event,),
         ),
       );
         },),
       Explore(
         title: 'Explore',
         event: Event_details,
-        onToggleFavorite: _toggleMealFavoriteStatus,
+        
       ),
       Explore(
-        event: _favoriteEvent,
+        event: favoriteEvent,
         title: 'Favorites',
-        onToggleFavorite: _toggleMealFavoriteStatus,
+        
       ),
       Profile(),
     ];
@@ -92,41 +95,78 @@ class _TabsScreen extends State<TabsScreen> {
         onPageChanged: _selectPage,
         children: activePage,
       ),
-          bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedPageIndex,
-        selectedItemColor: Colors.red,
-        unselectedItemColor: Colors.black,
-        backgroundColor: Colors.black,
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-        onTap: _onItemTapped,
-        items: [
-          const BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home_outlined,
-              size: 35,
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.3), // Shadow color
+          spreadRadius: 1, // Spread radius
+          blurRadius: 13, // Blur radius
+          offset: Offset(0, 0), // Offset in the x and y directions
+        ),
+      ],
             ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(
+            child: BottomNavigationBar(
+                  currentIndex: _selectedPageIndex,
+                  selectedItemColor: Colors.red,
+                  unselectedItemColor: const Color.fromARGB(255, 54, 46, 46),
+                  // backgroundColor: Colors.black,
+                  selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+                  onTap: _onItemTapped,
+                  items: [
+              BottomNavigationBarItem(
+                
+                icon: _selectedPageIndex == 0
+            ? Icon(
+                Icons.home,
+                size: 35,
+              )
+            : Icon(
+                Icons.home_outlined,
+                size: 35,
+              ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: _selectedPageIndex == 1
+            ? Icon(
+                MdiIcons.compass,
+                size: 35,
+              )
+            : Icon(
                 MdiIcons.compassOutline,
                 size: 35,
               ),
-              label: ''),
-          const BottomNavigationBarItem(
-              icon: Icon(
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: _selectedPageIndex == 2
+            ? Icon(
+                Icons.favorite,
+                size: 35,
+              )
+            : Icon(
                 Icons.favorite_border_rounded,
                 size: 35,
               ),
-              label: ''),
-          const BottomNavigationBarItem(
-              icon: Icon(
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: _selectedPageIndex == 3
+            ? Icon(
+                Icons.person,
+                size: 35,
+              )
+            : Icon(
                 Icons.person_outline,
                 size: 35,
               ),
-              label: ''),
-        ],
-      ),
+                label: '',
+              ),
+            ],
+                  type: BottomNavigationBarType.fixed,
+                ),
+          ),
     );
   }
 }

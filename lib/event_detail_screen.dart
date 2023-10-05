@@ -1,14 +1,15 @@
+import 'package:campusbuzz_mainui/calander.dart';
 import 'package:campusbuzz_mainui/model/event.dart';
-import 'package:campusbuzz_mainui/paymet.dart';
+import 'package:campusbuzz_mainui/provider/favprovider.dart';
+import 'package:campusbuzz_mainui/register.dart/form.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:readmore/readmore.dart';
-import 'package:like_button/like_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
-_launchurl() async {
-  var url = Uri.parse("https://www.google.com/maps/place/St.+Peter%E2%80%99s+Engineering+College/@17.5659436,78.4486349,17z/data=!3m1!4b1!4m6!3m5!1s0x3bcb8f0aa384c7bd:0x920ffa3cc552278a!8m2!3d17.5659436!4d78.4512098!16s%2Fm%2F0gx2lvy?entry=ttu");
+_launchurl(Event event) async {
+  var url = Uri.parse(
+      event.location);
 
   if (await canLaunchUrl(url)) {
     await launchUrl(url);
@@ -16,21 +17,22 @@ _launchurl() async {
     throw 'Cannot launch URL';
   }
 }
-class EventDetailScreen extends StatelessWidget {
+
+class EventDetailScreen extends ConsumerWidget {
   const EventDetailScreen({
     super.key,
     required this.event,
-    required this.onToggleFavorite,
   });
 
   final Event event;
 
-  final void Function(Event event) onToggleFavorite;
+  // final void Function(Event event) onToggleFavorite;
 
   @override
-  Widget build(BuildContext context) {
-    final eventLikeNotifier = Provider.of<EventLikeNotifier>(context);
-    final isLiked = eventLikeNotifier.isLiked(event.id);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favoriteEvents = ref.watch(favoriteEventsProvider);
+
+    final isFavorite = favoriteEvents.contains(event);
     return Scaffold(
       backgroundColor: Color(0xffF5F5F5),
       body: SafeArea(
@@ -86,17 +88,45 @@ class EventDetailScreen extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             child: CircleAvatar(
                               backgroundColor: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left:2),
-                                child: LikeButton(
-                                  isLiked: isLiked,
-                                  onTap: (liked) async {
-                                    onToggleFavorite(event);
-                                    eventLikeNotifier.toggleLike(event.id);
-                                    return !liked;
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: InkWell(
+                                  onTap: () {
+                                    // Add your onPressed function here
+                                    print('Icon pressed');
+                                    final wasAdded = ref
+                                        .read(favoriteEventsProvider.notifier)
+                                        .toggleEventFavoriteStatus(event);
+                                    ScaffoldMessenger.of(context)
+                                        .clearSnackBars();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(wasAdded
+                                            ? 'Event added as a favorite.'
+                                            : 'Event removed.'),
+                                      ),
+                                    );
+                                    // widget.onToggleFavorite(event);
                                   },
+                                  child: Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                    child: Icon(isFavorite ? Icons.favorite : Icons.favorite_border_outlined,color: Colors.red,)
+                                  ),
                                 ),
                               ),
+                              // child: Padding(
+                              //   padding: const EdgeInsets.only(left:2),
+                              //   child: LikeButton(
+                              //     isLiked: isLiked,
+                              //     onTap: (liked) async {
+                              //       onToggleFavorite(event);
+                              //       eventLikeNotifier.toggleLike(event.id);
+                              //       return !liked;
+                              //     },
+                              //   ),
+                              // ),
                             ),
                           ),
                         )
@@ -212,10 +242,16 @@ class EventDetailScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 0),
-                              child: Icon(
-                                Icons.arrow_forward_ios,
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CalendarPage()));
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.only(left: 0),
+                                child: Icon(
+                                  Icons.arrow_forward_ios,
+                                ),
                               ),
                             ),
                           ],
@@ -233,62 +269,63 @@ class EventDetailScreen extends StatelessWidget {
 
                       //location
 
-                  GestureDetector(
-                    onTap: () {
-                      _launchurl();
-                    },
-                    child: Container( child: SizedBox(
-                          child: Row(
-                            children: [
-                           const   Icon(
-                                Icons.location_on_outlined,
-                                size: 40,
-                              ),
-                            const  SizedBox(
-                                width: 20,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: 235,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          event.college_name,
-                                          style:const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                     const   SizedBox(
-                                          height: 1.5,
-                                        ),
-                                        Text(
-                                          event.college_name,
-                                          style:const TextStyle(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w500,
-                                              color: Color(0xff8D8D8D)),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                              InkWell(
-                               
-                                child:const Padding(
-                                  padding: EdgeInsets.only(left: 0),
-                                  child: Icon(Icons.arrow_forward_ios),
+                      GestureDetector(
+                        onTap: () {
+                          _launchurl(event);
+                        },
+                        child: Container(
+                          child: SizedBox(
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_on_outlined,
+                                  size: 40,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: 235,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            event.college_name,
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          const SizedBox(
+                                            height: 1.5,
+                                          ),
+                                          Text(
+                                            event.college_name,
+                                            style: const TextStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xff8D8D8D)),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                InkWell(
+                                  child: const Padding(
+                                    padding: EdgeInsets.only(left: 0),
+                                    child: Icon(Icons.arrow_forward_ios),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),),
-                  ),
-                    const  SizedBox(
+                        ),
+                      ),
+                      const SizedBox(
                         height: 30,
                       ),
                     ],
@@ -304,7 +341,8 @@ class EventDetailScreen extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder:(context) => const Upi(),));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Forms()));
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(13),
@@ -323,7 +361,7 @@ class EventDetailScreen extends StatelessWidget {
                   ),
                 ),
               ),
-           const   SizedBox(
+              const SizedBox(
                 height: 50,
               ),
             ],
@@ -352,3 +390,18 @@ class EventLikeNotifier extends ChangeNotifier {
     return _likedEventIds.contains(eventId);
   }
 }
+
+
+
+
+// class Form extends StatelessWidget {
+//   const Form({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Scaffold(
+//       backgroundColor: Colors.blue,
+//       body: Text("data"),
+//     );
+//   }
+// }

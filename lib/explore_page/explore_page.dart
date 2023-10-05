@@ -1,27 +1,28 @@
 import 'package:campusbuzz_mainui/data/event_list.dart';
-import 'package:campusbuzz_mainui/event_detail_screen.dart';
 import 'package:campusbuzz_mainui/model/event.dart';
+import 'package:campusbuzz_mainui/provider/favprovider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:transparent_image/transparent_image.dart';
-import 'package:like_button/like_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Explore_list extends StatelessWidget {
+class Explore_list extends ConsumerWidget {
   const Explore_list(
       {super.key,
       required this.event,
       required this.onselectevent,
-      required this.onToggleFavorite});
+     });
 
   final Event event;
 
   final void Function(Event event) onselectevent;
-  final void Function(Event event) onToggleFavorite;
+  // final void Function(Event event) onToggleFavorite;
 
   @override
-  Widget build(BuildContext context) {
-    final eventLikeNotifier = Provider.of<EventLikeNotifier>(context);
-    final isLiked = eventLikeNotifier.isLiked(event.id);
+  Widget build(BuildContext context,WidgetRef ref) {
+    final favoriteEvents = ref.watch(favoriteEventsProvider);
+
+    final isFavorite = favoriteEvents.contains(event);
+    // final eventLikeNotifier = Provider.of<EventLikeNotifier>(context);
+    // final isLiked = eventLikeNotifier.isLiked(event.id);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -45,32 +46,32 @@ class Explore_list extends StatelessWidget {
               ),
             ),
           //search
-          if (event == Event_details.first)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 255, 255, 255),
-                    borderRadius: BorderRadius.circular(23.5)),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      hintText: 'Search anything...',
-                      hintStyle: TextStyle(color: Color(0xffC7C7C7)),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Color(0xffc7c7c7),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+          // if (event == Event_details.first)
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16),
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //         color: const Color.fromARGB(255, 255, 255, 255),
+            //         borderRadius: BorderRadius.circular(23.5)),
+            //     child: Padding(
+            //       padding: const EdgeInsets.symmetric(
+            //         horizontal: 20,
+            //       ),
+            //       child: TextFormField(
+            //         decoration: const InputDecoration(
+            //           border: InputBorder.none,
+            //           focusedBorder: InputBorder.none,
+            //           hintText: 'Search anything...',
+            //           hintStyle: TextStyle(color: Color(0xffC7C7C7)),
+            //           prefixIcon: Icon(
+            //             Icons.search,
+            //             color: Color(0xffc7c7c7),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           InkWell(
             onTap: () {
               onselectevent(event);
@@ -137,19 +138,48 @@ class Explore_list extends StatelessWidget {
                                         child: CircleAvatar(
                                   
                                           backgroundColor: Colors.white,
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 2),
-                                            child: LikeButton(
-                                              isLiked: isLiked,
-                                              onTap: (liked) async {
-                                                onToggleFavorite(event);
-                                                eventLikeNotifier
-                                                    .toggleLike(event.id);
-                                                return !liked;
-                                              },
-                                            ),
-                                          ),
+                                          child:Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: InkWell(
+                                  onTap: () {
+                                    // Add your onPressed function here
+                                    print('Icon pressed');
+                                    final wasAdded = ref
+                                        .read(favoriteEventsProvider.notifier)
+                                        .toggleEventFavoriteStatus(event);
+                                    ScaffoldMessenger.of(context)
+                                        .clearSnackBars();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(wasAdded
+                                            ? 'Event added as a favorite.'
+                                            : 'Event removed.'),
+                                      ),
+                                    );
+                                    // widget.onToggleFavorite(event);
+                                  },
+                                  child:  Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                    child: Icon(isFavorite ? Icons.favorite : Icons.favorite_border_outlined,color: Colors.red,)
+                                        
+                                  ),
+                                ),
+                              ),
+                                          // child: Padding(
+                                          //   padding:
+                                          //       const EdgeInsets.only(left: 2),
+                                          //   child: LikeButton(
+                                          //     isLiked: isLiked,
+                                          //     onTap: (liked) async {
+                                          //       onToggleFavorite(event);
+                                          //       eventLikeNotifier
+                                          //           .toggleLike(event.id);
+                                          //       return !liked;
+                                          //     },
+                                          //   ),
+                                          // ),
                                         ),
                                       ),
                                     )

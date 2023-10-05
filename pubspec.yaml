@@ -43,6 +43,11 @@ dependencies:
   #firebase
   cloud_firestore: ^4.9.1
   firebase_core: ^2.15.1
+  #firebase
+
+  paytm_allinonesdk: ^1.2.1
+  flutter_riverpod: ^2.4.1
+  table_calendar: ^3.0.9
 
 
 
@@ -101,7 +106,12 @@ flutter:
     - images/b2.jpg
     - images/b3.jpeg
     - images/hacktopia.png
-
+    - images/abcd3.png
+    - images/abcd.png
+    - images/abcd2.png
+    - images/festt.png
+    - images/sportt.png
+    - images/techh.png
 
 
 

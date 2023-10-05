@@ -4,19 +4,19 @@ import 'package:campusbuzz_mainui/model/event.dart';
 import 'package:campusbuzz_mainui/screen/inside_categ_screen.dart';
 import 'package:flutter/material.dart';
 class EventScreen extends StatelessWidget {
-  const EventScreen({super.key,required this.Ctitle,required this.events,required this.onToggleFavorite
+  const EventScreen({super.key,required this.Ctitle,required this.events,
   });
 
   final String Ctitle;
   final List<Event> events;
-    final void Function(Event event) onToggleFavorite;
+    // final void Function(Event event) onToggleFavorite;
 
     void selectEvent(BuildContext context, Event meal) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => EventDetailScreen(
           event: meal,
-          onToggleFavorite: onToggleFavorite,
+          // onToggleFavorite: onToggleFavorite,
         ),
       ),
     );
@@ -52,7 +52,8 @@ class EventScreen extends StatelessWidget {
         itemCount: events.length,
         itemBuilder: (ctx, index) => EventItem(event: events[index], onSelectEvent: (event) {
             selectEvent(context, event);
-          }, onToggleFavorite:onToggleFavorite,
+          },
+          // onToggleFavorite:onToggleFavorite,
         ), gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       );
     }

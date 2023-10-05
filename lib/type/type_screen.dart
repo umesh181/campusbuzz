@@ -1,9 +1,7 @@
-import 'package:campusbuzz_mainui/data/event_list.dart';
 import 'package:campusbuzz_mainui/event_detail_screen.dart';
-import 'package:campusbuzz_mainui/explore_page/explore_page.dart';
 import 'package:campusbuzz_mainui/homescreen.dart';
-import 'package:flutter/material.dart';
 import 'package:campusbuzz_mainui/model/event.dart';
+import 'package:flutter/material.dart';
 class Explore extends StatelessWidget {
     const Explore ({super.key,this.title,required this.event,required this.onToggleFavorite});
 
@@ -17,7 +15,7 @@ class Explore extends StatelessWidget {
       MaterialPageRoute(
         builder: (ctx) => EventDetailScreen(
           event: event,
-          onToggleFavorite: onToggleFavorite,
+          // onToggleFavorite: onToggleFavorite,
         ),
       ),
     );
@@ -51,7 +49,7 @@ class Explore extends StatelessWidget {
         itemCount: event.length,
         itemBuilder: (ctx, index) => Homescreen(event: event,onselectevent: (event){
           selectEvent(context, event);
-        }, onToggleFavorite: onToggleFavorite,)
+        }, )
       );
     }
 
